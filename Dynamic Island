@@ -1,0 +1,45 @@
+import pygame
+import random
+
+# Constants
+WIDTH, HEIGHT = 320, 568  # iPhone SE screen size
+TILE_SIZE = 10
+NUM_ROWS = HEIGHT // TILE_SIZE
+NUM_COLS = WIDTH // TILE_SIZE
+
+# Colors
+WATER_COLOR = (0, 0, 255)
+LAND_COLOR = (139, 69, 19)
+BEACH_COLOR = (255, 255, 153)
+TREE_COLOR = (34, 139, 34)
+
+# Initialize Pygame
+pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Dynamic Island")
+
+# Generate Terrain
+terrain = [[random.random() for _ in range(NUM_COLS)] for _ in range(NUM_ROWS)]
+
+# Main loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Draw terrain
+    screen.fill(WATER_COLOR)
+    for y in range(NUM_ROWS):
+        for x in range(NUM_COLS):
+            if terrain[y][x] < 0.45:
+                color = WATER_COLOR
+            elif terrain[y][x] < 0.5:
+                color = BEACH_COLOR
+            else:
+                color = LAND_COLOR
+            pygame.draw.rect(screen, color, (x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+
+    pygame.display.flip()
+
+pygame.quit()
